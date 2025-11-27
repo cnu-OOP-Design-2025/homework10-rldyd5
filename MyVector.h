@@ -138,7 +138,7 @@ bool MyVector<T>::operator==(const MyVector& other) const {
 
 template<typename T>
 bool MyVector<T>::operator!=(const MyVector& other) const {
-    if (length == other.length)
+    if (length != other.length)
         return true;
     for (int i = 0; i < length; i++)
     {
@@ -241,7 +241,7 @@ typename MyVector<T>::Iterator& MyVector<T>::Iterator::operator--() {
 
 template<typename T>
 typename MyVector<T>::Iterator MyVector<T>::Iterator::operator+(int n) const { 
-    return Iterator(ptr - n);
+    return Iterator(ptr + n);
 };
 
 template<typename T>
@@ -277,7 +277,7 @@ typename MyVector<T>::Iterator MyVector<T>::end() {
 
 template<typename T>
 typename MyVector<T>::Iterator MyVector<T>::insert(Iterator pos, const T& value) {
-    int index = pos + begin();
+    int index = pos - begin();
     if (this->length == this->cap) {
         T* temp = new T[this->length + 10];
         for (int i = 0; i < this->length; i++)
@@ -288,7 +288,7 @@ typename MyVector<T>::Iterator MyVector<T>::insert(Iterator pos, const T& value)
         this->data = temp;
         this->cap += 10;
     }
-    for (Iterator i = length; i > index; i--)
+    for (int i = length; i > index; i--)
     {
         *(data + i) = *(data + i - 1);
     }
@@ -300,7 +300,8 @@ typename MyVector<T>::Iterator MyVector<T>::insert(Iterator pos, const T& value)
 
 template<typename T>
 typename MyVector<T>::Iterator MyVector<T>::erase(Iterator pos) {
-    for (Iterator i = pos.ptr; i < length - 1; i++)
+    int index = pos - begin();
+    for (int i = index; i < length - 1; i++)
     {
         *(data + i) = *(data + i + 1);
     }
